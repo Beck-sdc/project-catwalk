@@ -4,7 +4,7 @@ import {Row} from 'react-bootstrap';
 
 const CharBreakdown = (props) => {
     let chars = props.metadata.characteristics
-    // console.log('chars', chars)
+    //console.log('chars', props.metadata.characteristics)
     if (chars !== undefined) {
         return (
             <div className="charBreakdown" >

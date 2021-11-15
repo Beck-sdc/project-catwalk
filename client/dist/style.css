@@ -298,17 +298,23 @@ RATINGS & REVIEWS
 */
 
 .rr-container {
-  /* height: 100%; */
   padding-bottom: 30px;
 }
 .reviews-container {
-  /* height: 30%; */
   padding: 5px;
   margin: 5px;
+  width: 100%;
 }
-.sort-dropdown {
-  padding: 4px;
-  margin: 4px;
+
+.reviewTiles {
+  max-height: 700px;
+  overflow-x: hidden;
+  overflow-y: visible;
+}
+.reviews-sort {
+  border: 0px;
+  outline: 0px;
+  text-decoration: underline;
 }
 
 .review-Tile {
@@ -320,20 +326,34 @@ RATINGS & REVIEWS
   margin: 4px;
 }
 
-#rev-user {
+#rev-user, #rev-date {
   text-align: right;
+  font-size: 12px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: gray;
 }
 #rev-date {
-  text-align: right;
+  padding-right: 5px;
 }
 #rev-summary, #rev-body {
   padding: 4px;
   margin: 4px;
 }
+#show-rev-body {
+  font-size: 10px;
+  color: black;
+  cursor: pointer;
+}
 #review-helpful {
   padding: 4px;
   margin: 4px;
   font-size: small;
+  color: gray;
+}
+#review-answer {
+  margin: 2px;
+  padding: 2px;
+  color: gray;
 }
 #rev-response {
   padding: 8px;
@@ -361,13 +381,14 @@ RATINGS & REVIEWS
   align-items: flex-start;
 }
 .ratings-container, .charBreakdown {
-  margin: 10px;
+  margin: 5px;
+  padding: 5px;
   padding-bottom: 35px;
 }
 
-.ratings-container {
+/* .ratings-container {
   height: 30%;
-}
+} */
 .ratingsbar {
   margin: 4px;
   padding: 3px;
@@ -425,6 +446,10 @@ RATINGS & REVIEWS
   display: flex;
   justify-content: space-between;
   font-size: 10px;
-  width: 1px;
+  /* width: 1px; */
   padding-top: 5px;
 }
+
+/* #rev-overall-rate {
+  display: none;
+} */

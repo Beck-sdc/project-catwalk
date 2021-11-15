@@ -2,10 +2,11 @@
 import React, { useState, useEffect } from 'react';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col'
 import RowOne from './RowOne.jsx';
 import RowTwo from './RowTwo.jsx';
+import Col from 'react-bootstrap/Col'
 import axios from 'axios';
+import defaultData from './defaultData.js';
 
 const Overview = ({ currentProduct, currentStyle, handleChangeStyle, postUserClick }) => {
   const [productInfo, changeProductInfo]  = useState([])

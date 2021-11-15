@@ -51,10 +51,7 @@ module.exports = {
       })
   },
 
-  // TODO: Add a review for given product
   addReview: (req, res) => {
-    let id = req.params.product_id;
-
     let reviewBody = {
       product_id: req.body.product_id,
       rating: req.body.rating, 
@@ -67,14 +64,13 @@ module.exports = {
       characteristics: req.body.characteristics
     }
   
-    axios.post(`${API_URL}/reviews/?product_id=${id}`, reviewBody, config)
+    axios.post(`${API_URL}/reviews`, reviewBody, config)
       .then(() => {
-        console.log('Successfully added review!')
-        res.status(201).send()
+        res.status(201).send('Successfully added review! ', reviewBody)
       })
       .catch(err => {
-        console.log('Unable to add review..')
-        res.status(400).send(err)
+        console.log('Unable to add review.. ', err.response.data)
+        res.status(400).send()
       })
   },
   
@@ -90,7 +86,7 @@ module.exports = {
         res.status(500).send(err)
       })
   },
-  // TODO: Updates a review to show it was reported
+
   reportReview: (req, res) => {
     let review_id = req.body.review_id;
     axios.put(`${API_URL}/reviews/${review_id}/report`, null, config)

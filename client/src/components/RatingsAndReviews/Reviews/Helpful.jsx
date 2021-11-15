@@ -4,7 +4,6 @@ import axios from 'axios';
 
 const Helpful = ({helpfulness, reviewId}) => {
     const [helpful, setHelpful] = useState(helpfulness)
-    const [notHelpful, setNotHelpful] = useState(0)
     const [click, setClick] = useState(false)
     
     // TODO: useEffect
@@ -12,18 +11,11 @@ const Helpful = ({helpfulness, reviewId}) => {
         setHelpful(helpful)
     }, [helpful])
 
-    useEffect( () => {
-        setNotHelpful(notHelpful)
-    }, [notHelpful])
-    // TODO: finish up notHelpful 
+    
     const updateHelpful = e => {
         e.preventDefault()
         
         if (!click) {
-            if (e.target.value === "no") {
-                setNotHelpful(notHelpful + 1)
-                setClick(true)
-            } else {
             return axios.put(`/reviews/${reviewId}/helpful`, { review_id: `${reviewId}`})
                 .then(res => {
                     console.log(res.data)
@@ -35,7 +27,6 @@ const Helpful = ({helpfulness, reviewId}) => {
                         console.log(err.res.data)
                     }
                 })
-            }
         }
     }
 
@@ -51,23 +42,14 @@ const Helpful = ({helpfulness, reviewId}) => {
     return (
         <div>
             <div id="review-helpful">Helpful?
-                <a 
+                <a  id="review-answer"
                     href="#" 
-                    style={{margin: "2px", padding: "2px"}}  
                     value="yes" 
                     onClick={updateHelpful}
                 >Yes
                 </a>({helpful})
                 <span> | </span>
-                <a 
-                    href="#" 
-                    style={{margin: "2px", padding: "2px"}} 
-                    value="no"  
-                    onClick={updateHelpful}
-                >No
-                </a>({notHelpful})
-                <span> | </span>
-                <a 
+                <a  id="review-answer"
                     href="#"
                     value="reportReview"
                     onClick={reportReview}
@@ -79,6 +61,8 @@ const Helpful = ({helpfulness, reviewId}) => {
 }
 
 export default Helpful;
+
+
 
 // const updateHelpful = e => {
 //     e.preventDefault()
@@ -94,3 +78,10 @@ export default Helpful;
 //             })
 //     }
 // }
+{/* <a 
+    href="#" 
+    style={{margin: "2px", padding: "2px"}} 
+    value="no"  
+    onClick={updateHelpful}
+>No
+</a>({notHelpful}) */}

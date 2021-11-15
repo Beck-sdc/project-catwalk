@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import {Form, Button} from 'react-bootstrap';
+import Ratings from 'react-ratings-declarative';
 import axios from 'axios';
 
 // eslint-disable-next-line react/prop-types
 const ModalForm = ({closeModal, productId}) => {
     const [characterCount, setCharacterCount] = useState(0);
     const [rateValue, rateInputProps] = userateBtns("option")
-    const [recValue, recInputProps] = useRecClick("true")
+    const [recValue, recInputProps] = useRecClick(null)
     
     const [size, setSize] = useState(null)
     const [width, setWidth] = useState(null)
@@ -23,16 +24,34 @@ const ModalForm = ({closeModal, productId}) => {
     const [selectedImages] = useState([])
 
     const [product, getProduct] = useState([])
+    const [metadata, getMetadata] = useState([])
 
     useEffect(() => {
         axios.get(`/products/${productId}`)
             .then(res => getProduct(res.data))
             .catch(err => console.error('Cannot get current product', err))
     }, [productId])
-
+    // get metadata for reviews
+    useEffect(() => {
+        axios.get(`/reviews/meta/${productId}`)
+            .then(res => {
+                let data = res.data
+                let results = []
+                for (let key in data.characteristics) {
+                    let chars = data.characteristics[key]
+                    let id = chars.id
+                    results.push(id)
+                    getMetadata(results)
+                    //console.log('id: ', results)
+                }
+            })
+            .catch(err => console.error('Cannot get current metadata', err))
+    }, [])
+    //console.log('metadata here: ', metadata)
     const min = 50
-    const Minimum = () => 
-        (min - characterCount > 0) ? <p style={{ fontSize: "15px" }}>Minimum required characters left: {min - characterCount}</p> : <p>Minimum reached</p>
+    const Minimum = () => (min - characterCount > 0) ? 
+                          <p style={{ fontSize: "15px" }}>Minimum required characters left: {min - characterCount}</p> 
+                          : <p>Minimum reached</p>;
 
     function userateBtns(name) {
         const [value, setState] = useState(null);
@@ -65,70 +84,60 @@ const ModalForm = ({closeModal, productId}) => {
             setImage(url);
         }
     }
-
+    
     // handleFormSubmit
     const handleFormSubmit = () => {
-        let uploadedImages = [image, ...selectedImages]
+        //let uploadedImages = [image, ...selectedImages] 
+        let recommend = (recValue === "true")
         const input = {
             product_id: product.id,
             rating: Number(rateValue),
             summary: summary,
             body: review,
-            recommend: (recValue === "true"),
+            recommend: recommend,
             name: name,
             email: email,
-            photos: uploadedImages,
+            photos: [],
             characteristics: {
-                "size": size,
-                "width": width,
-                "comfort": comfort,
-                "quality": quality,
-                "length": length,
-                "fit": fit
+                // size: size,
+                // width: width,
+                // comfort: comfort,
+                // quality: quality,
+                // length: length,
+                // fit: fit
             }
         }
-        addReview(input)
+        axios.post(`/reviews`, input)
+            .then(() => console.log('Review added!'))
+            .catch(err => console.error(`Error: ${err}`))
     }
-    
-    // TODO: create axios post request to add review
-    const addReview = data => {
-        return axios.post(`/reviews/${product.id}`, data, {
-            header: {
-                'Content-type': 'multipart/form-data'
-            }
-        })
-        .then(res => {
-            return res;
-        })
-        .catch(err => {
-            console.error('Cannot add review', err)
-        })
-    }
-    
+
     return (
         <div>
-            <Form className="modalContainer" onSubmit={(e) => {
+            <Form className="modalContainer" 
+            onSubmit={(e) => {
                 e.preventDefault()
-                closeModal(false)
                 handleFormSubmit()
-            }}>
+                closeModal(false)
+                }
+            }>
                 <div className="form-input">
                     <Form.Group>
                         <Form.Label>Overall Rating</Form.Label>
                             <br></br>
-                            <Form.Check
+                            <Form.Check id="rev-overall-rate"
                                 inline label="Poor" value="1" {...rateInputProps} checked={rateValue === "1"}
                             />
-                            <Form.Check
+                            <Form.Check id="rev-overall-rate"
                                 inline label="Fair" value="2" {...rateInputProps} checked={rateValue === "2"}
                             />
-                            <Form.Check
+                            <Form.Check id="rev-overall-rate"
                                 inline label="Average" value="3" {...rateInputProps} checked={rateValue === "3"}
                             />
-                            <Form.Check
+                            <Form.Check id="rev-overall-rate"
                                 inline label="Good" value="4" {...rateInputProps} checked={rateValue === "4"}
                             />
-                            <Form.Check
+                            <Form.Check id="rev-overall-rate"
                                 inline label="Great" value="5" {...rateInputProps} checked={rateValue === "5"}
                             />
                     </Form.Group>
@@ -273,12 +282,13 @@ const ModalForm = ({closeModal, productId}) => {
                 </div>
                 <Button
                     id="review-submit-btn" type="submit" 
-                            onSubmit={(e) => {
-                                e.preventDefault()
-                                closeModal(false)
-                                }
-                            }
-                    >Submit your review!
+                    onClick={(e) => {
+                        e.preventDefault()
+                        handleFormSubmit()
+                        closeModal(false)
+                        }
+                    }
+                >Submit your review!
                 </Button>
             </Form>
         </div>
@@ -286,77 +296,3 @@ const ModalForm = ({closeModal, productId}) => {
 }
 
 export default ModalForm;
-
-
-{/* <div className="review-overall">Overall rating:
-    <p id="review-choices">
-        <input className="review-rate" value="1" {...rateInputProps} checked={rateValue === "1"} />Poor
-        <input className="review-rate" value="2" {...rateInputProps} checked={rateValue === "2"} />Fair
-        <input className="review-rate" value="3" {...rateInputProps} checked={rateValue === "3"} />Average
-        <input className="review-rate" value="4" {...rateInputProps} checked={rateValue === "4"} />Good
-        <input className="review-rate" value="5" {...rateInputProps} checked={rateValue === "5"} />Great
-    </p>
-</div> */}
-{/* <div className="review-recc" required>Do you recommend this product?
-    <p id="recc-answer" >
-        <input id="recc-yes" value="true" type="radio"  {...recInputProps} checked={recValue === "true"} />Yes
-        <input id="recc-no" value="false" type="radio" {...recInputProps} checked={recValue === "false"} />No
-    </p>
-</div> */}
-{/* <div className="review-photos">Add photo: (max 5)
-    <br></br>
-    <input
-        type="file"
-        name="image"
-        accept="image/*"
-        onChange={handleSelectImage}
-        multiple
-    />
-<div>
-    <img src={image} style={{ margin: "10px", width: "200px", height: "200px" }}/>
-    <img src={selectedImages[0]} style={{ margin: "10px", width: "200px", height: "200px" }} />
-    <img src={selectedImages[1]} style={{ margin: "10px", width: "200px", height: "200px" }} />
-    <img src={selectedImages[2]} style={{ margin: "10px", width: "200px", height: "200px" }} />
-    <img src={selectedImages[3]} style={{ margin: "10px", width: "200px", height: "200px" }} />
-</div>
-</div> */}
-{/* <Characteristics handleChar={handleChar}/> */}
-{/* <div className="review-summary">Summary:
-    <br></br>
-    <textarea 
-        type="text" 
-        cols="50" 
-        placeholder="Ex: Best purchase ever!" 
-        maxLength="60"
-        onChange={(e) => setSummary(e.target.value)}
-        
-    />
-</div> */}
-{/* <div className="review-body">Review: */}
-{/* <br></br> */}
-{/* <textarea
-    onChange={(e) => {
-        setReview(e.target.value)
-        setCharacterCount(e.target.value.length)
-    }}
-    type="text" rows="5" cols="50"
-    placeholder="Why did you like the product or not?"
-    minLength="50" maxLength="1000" required
-/> */} {/* </div> */}
-{/* <div className="reviewer-name">username:
-<br></br>
-<input 
-    onChange={(e) => setName(e.target.value)}
-    type="text" 
-    placeholder="Ex: jackson11!" 
-    maxLength="60" required
-/>
-<p style={{ fontSize: "10px" }}>For privacy reasons, do not use your full name or email address</p>
-</div> */}
-{/* <button id="review-submit-btn" type="submit" 
-        onSubmit={e => {
-            e.preventDefault()
-            closeModal(false)
-            }
-        }
->Submit your review!</button> */}

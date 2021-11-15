@@ -1,15 +1,16 @@
 /* eslint-disable react/prop-types */
-import React from 'react';
+import React, { useState } from 'react';
 import ReviewsRating from './ReviewsRating.jsx';
 import Helpful from './Helpful.jsx';
-// import Row from 'react-bootstrap/Row';
-// import Col from 'react-bootstrap/Col';
 import {Image, Row, Col} from 'react-bootstrap';
 
 const ReviewTile = props => {
+    const [showMore, setShowMore] = useState(false)
+
     function GetFormattedDate() {
         let date = props.review.date.slice(0, 10).split('-');
-        let formattedDate = `${date[1]}/${date[2]}/${date[0]}`;
+        let months = ["", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        let formattedDate = ` ${months[parseInt(date[1], 10)]} ${date[2]}, ${date[0]}`;
         return formattedDate;
     }
     
@@ -21,19 +22,33 @@ const ReviewTile = props => {
                 </Col>
                 <Col xs={4}>
                     <div id="rev-user">
-                        <span>{props.review['reviewer_name']} 
-                        {props.review.verified ? <p style={{fontSize: "10px"}}> Verified Purchaser &#10003;</p> : null}
+                        {props.review.verified ? <span>&#10003; </span> : null}
+                        <span>
+                            {props.review['reviewer_name']}, 
+                        </span>
+                        <span id="rev-date">
+                            <GetFormattedDate />
                         </span>
                     </div>
                 </Col>
-                <Col xs={2}>
-                    <p id="rev-date" style={{fontSize: "15px"}}>
+                {/* <Col xs={2}>
+                    <p id="rev-date">
                         <GetFormattedDate />
                     </p>
-                </Col>
+                </Col> */}
             </Row>
-            <div id="rev-summary" style={{fontWeight: "bold", fontSize: "18px"}}>{props.review.summary}</div>
-            <div id="rev-body" style={{fontSize: "13px"}}>{props.review.body}</div>
+            <div id="rev-summary" style={{fontWeight: "bold", fontSize: "18px"}}>
+                {props.review.summary}
+            </div>
+            <div id="rev-body" style={{fontSize: "13px"}}>
+                {showMore ? props.review.body : `${props.review.body.substring(0, 250)}`}
+                {props.review.body.length >= 250 ? 
+                    <span id="show-rev-body" onClick={(e) => {
+                        e.preventDefault()
+                        setShowMore(!showMore)}}>
+                            {showMore ? " show less" : "...show more"}
+                    </span> : null}
+            </div>
             {!props.review.recommend ? null : <p id="rev-rec">I recommend this product<span>&#10003;</span></p>}
             {props.review.response ? 
                 <div 
