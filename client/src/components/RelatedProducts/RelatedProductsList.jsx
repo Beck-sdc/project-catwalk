@@ -8,11 +8,11 @@ const RelatedProductsList = ({ currentProduct, handleChangeProduct }) => {
   const [products, setProducts] = useState([]);
   const currentProductId = currentProduct.product_id;
   // TODO: add spinner to list
-  useEffect(() => {
-    axios.get(`/products/${currentProductId}/related`)
-      .then(results => setProducts(results.data))
-      .catch(err => console.error(err));
-  }, [currentProduct]);
+  // useEffect(() => {
+  //   axios.get(`/products/${currentProductId}/related`)
+  //     .then(results => setProducts(results.data))
+  //     .catch(err => console.error(err));
+  // }, [currentProduct]);
 
   return (
     <CarouselProvider

@@ -10,8 +10,9 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      reviewMetadata: { product_id: 42366 },
-      currentStyle: 253620
+      reviewMetadata: { product_id: 1 },
+      currentStyle: 1,
+      productId: { product_id: 1 },
     };
 
     this.handleChangeProduct = this.handleChangeProduct.bind(this);
@@ -21,7 +22,8 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    this.getReviewMetadata(this.state.reviewMetadata.product_id || 42366);
+    this.getReviewMetadata(this.state.reviewMetadata.product_id || 1);
+    this.getAllProducts(this.state.productId.product_id || 1);
   }
 
   getReviewMetadata(productId) {
@@ -29,6 +31,17 @@ class App extends React.Component {
       .then(results => this.setState({ reviewMetadata: results.data, currentStyle: results.data.defaultStyle.style_id }))
       .catch(err => console.error('failed to retrieve review metadata: ', err))
   }
+
+  getAllProducts(productId) {
+    axios.get(`/products/${productId}`)
+      .then(results => {
+        this.setState({
+          productId: results.data
+        })
+          .catch(err => console.error('failed to retrieve products: ', err))
+      })
+  }
+
   handleChangeStyle(event) {
     this.setState({
       currentStyle: Number(event.target.id)
@@ -57,12 +70,11 @@ class App extends React.Component {
     return (
       <div>
         <Container className="header"><h1>Project Catwalk</h1></Container>
-        <Overview postUserClick={this.postUserClick} currentProduct={this.state.reviewMetadata.product_id} currentStyle={this.state.currentStyle} handleChangeStyle={this.handleChangeStyle}/>
-        <RelatedProducts postUserClick={this.postUserClick} currentProduct={this.state.reviewMetadata} handleChangeProduct={this.handleChangeProduct}/>
-        <Qa postUserClick={this.postUserClick} currentProduct={this.state.reviewMetadata}/>
+        <Overview postUserClick={this.postUserClick} currentProduct={this.state.productId.product_id} currentStyle={this.state.currentStyle} handleChangeStyle={this.handleChangeStyle} />
+        <RelatedProducts postUserClick={this.postUserClick} currentProduct={this.state.reviewMetadata} handleChangeProduct={this.handleChangeProduct} />
+        <Qa postUserClick={this.postUserClick} currentProduct={this.state.reviewMetadata} />
         <RatingsAndReviews postUserClick={this.postUserClick} currentProduct={this.state.reviewMetadata} />
-
-      </div>
+      </div >
     )
   }
 

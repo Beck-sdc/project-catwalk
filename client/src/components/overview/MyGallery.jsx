@@ -6,7 +6,7 @@ import ImageGallery from 'react-image-gallery';
 const MyGallery = ({ styleInfo }) => {
 
   var styleImages = [];
-  if(styleInfo.photos) {
+  if (styleInfo.photos) {
     styleInfo.photos.forEach(photo => {
       var photoObj = {}
       photoObj['original'] = photo.url
@@ -17,20 +17,20 @@ const MyGallery = ({ styleInfo }) => {
       styleImages.push(photoObj)
     })
   }
-  const defaultImages = [
-    {
-      original: 'https://picsum.photos/id/1018/1000/600/',
-      thumbnail: 'https://picsum.photos/id/1018/250/150/',
-    },
-    {
-      original: 'https://picsum.photos/id/1015/1000/600/',
-      thumbnail: 'https://picsum.photos/id/1015/250/150/',
-    },
-    {
-      original: 'https://picsum.photos/id/1019/1000/600/',
-      thumbnail: 'https://picsum.photos/id/1019/250/150/',
-    },
-  ];
+  // const defaultImages = [
+  //   {
+  //     original: 'https://picsum.photos/id/1018/1000/600/',
+  //     thumbnail: 'https://picsum.photos/id/1018/250/150/',
+  //   },
+  //   {
+  //     original: 'https://picsum.photos/id/1015/1000/600/',
+  //     thumbnail: 'https://picsum.photos/id/1015/250/150/',
+  //   },
+  //   {
+  //     original: 'https://picsum.photos/id/1019/1000/600/',
+  //     thumbnail: 'https://picsum.photos/id/1019/250/150/',
+  //   },
+  // ];
 
   const images = (styleImages || defaultImages);
 

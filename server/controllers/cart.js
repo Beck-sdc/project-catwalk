@@ -1,10 +1,11 @@
 const TOKEN = require('../../config.js').TOKEN;
 const axios = require('axios');
-const API_URL = `https://app-hrsei-api.herokuapp.com/api/fec2/hr-lax`
+const API_URL = `http://localhost:3001`
 
 let config = {
   headers: {
-    'Authorization': TOKEN
+    'Authorization': TOKEN,
+    'Content-Type': 'application/json',
   }
 }
 
@@ -13,11 +14,11 @@ module.exports = {
     axios.get(`${API_URL}/cart/`, config)
       .then(results => {
         console.log('all items in cart successfully obtained')
-          res.status(200).send(results.data)
+        res.status(200).send(results.data)
       })
-        .catch(err => {
-          console.error('unable to obtain items in cart')
-          res.status(400).send(err)
+      .catch(err => {
+        console.error('unable to obtain items in cart')
+        res.status(400).send(err)
       })
   },
 

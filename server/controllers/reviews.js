@@ -14,7 +14,7 @@ module.exports = {
   // return list of reviews for specific product
   getOne: (req, res) => {
     let id = req.params.product_id;
-    
+
     axios.get(`${API_URL}/reviews/?product_id=${id}`, config)
       .then(result => {
         console.log(`Successfully retrieved all reviews for product id: ${id}`)
@@ -54,7 +54,7 @@ module.exports = {
   addReview: (req, res) => {
     let reviewBody = {
       product_id: req.body.product_id,
-      rating: req.body.rating, 
+      rating: req.body.rating,
       summary: req.body.summary,
       body: req.body.body,
       recommend: req.body.recommend,
@@ -63,7 +63,7 @@ module.exports = {
       photos: req.body.photos,
       characteristics: req.body.characteristics
     }
-  
+
     axios.post(`${API_URL}/reviews`, reviewBody, config)
       .then(() => {
         res.status(201).send('Successfully added review! ', reviewBody)
@@ -73,7 +73,7 @@ module.exports = {
         res.status(400).send()
       })
   },
-  
+
   markHelpful: (req, res) => {
     let review_id = req.body.review_id;
     axios.put(`${API_URL}/reviews/${review_id}/helpful`, null, config)
@@ -96,7 +96,7 @@ module.exports = {
       })
       .catch(err => {
         console.error('Cannot report review...')
-        .res.status(500).send(err)
+          .res.status(500).send(err)
       })
-  } 
+  }
 }
