@@ -86,7 +86,7 @@ const StyleInfo = ({ productInfo, styleInfo, handleChangeStyle }) => {
     }
     const product = {
       user_session: sessionId,
-      product_id: 1,
+      product_id: Number(productInfo.product_id),
       active: 1,
       sku_id: skuId,
       quantity: quantity,

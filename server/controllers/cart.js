@@ -23,13 +23,7 @@ module.exports = {
   },
 
   addToCart: (req, res) => {
-
-    const product = {
-      sku_id: req.body.sku_id,
-      count: req.body.count
-    }
-
-    axios.post(`${API_URL}/cart/`, product, config)
+    axios.post(`${API_URL}/cart/`, req.body, config)
       .then(() => {
         console.log('Successfully added item to cart')
         res.status(201).send()

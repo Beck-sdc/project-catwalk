@@ -11,7 +11,6 @@ import axios from 'axios';
 const Overview = ({ currentProduct, currentStyle, handleChangeStyle, postUserClick }) => {
   const [productInfo, changeProductInfo] = useState([])
   const [styleInfo, changeStyleInfo] = useState([])
-  const [sessionId, setSessionID] = useState(sessionID)
 
   useEffect(() => {
     axios.get(`/products/${currentProduct}`)
