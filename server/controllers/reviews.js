@@ -2,11 +2,12 @@ const getAverageRating = require('./helpers/getAverageRating.js');
 const getDefaultStyle = require('./helpers/getDefaultStyle.js');
 const TOKEN = require('../../config.js').TOKEN;
 const axios = require('axios');
-const API_URL = `https://app-hrsei-api.herokuapp.com/api/fec2/hr-lax`
+const API_URL = `http://localhost:3002`
 
 let config = {
   headers: {
-    'Authorization': TOKEN
+    'Authorization': TOKEN,
+    'Content-Type': 'application/json'
   }
 }
 
@@ -30,7 +31,9 @@ module.exports = {
     let productId = req.params.product_id;
 
     axios.get(`${API_URL}/reviews/meta?product_id=${productId}`, config)
+    //console.log(`Getting Metadata for product ${productId}`)
       .then(results => {
+        console.log('RESULTS.DATA: ', results.data)
         let product = results.data;
         // retrieve average ratings and add as prop to product
         return getAverageRating(product.product_id)
@@ -39,7 +42,7 @@ module.exports = {
             // retrieve default style and add as prop to product
             return getDefaultStyle(product.product_id)
               .then(defaultStyle => {
-                product['defaultStyle'] = defaultStyle;
+                product['defaultStyle'] = defaultStyle || 1;
                 return product;
               })
           })
@@ -76,7 +79,7 @@ module.exports = {
 
   markHelpful: (req, res) => {
     let review_id = req.body.review_id;
-    axios.put(`${API_URL}/reviews/${review_id}/helpful`, null, config)
+    axios.put(`${API_URL}/reviews/${review_id}/helpful`, {}, config)
       .then(() => {
         console.log('Successfully marked review as helpful!')
         res.status(204).send()
@@ -89,7 +92,7 @@ module.exports = {
 
   reportReview: (req, res) => {
     let review_id = req.body.review_id;
-    axios.put(`${API_URL}/reviews/${review_id}/report`, null, config)
+    axios.put(`${API_URL}/reviews/${review_id}/report`, {}, config)
       .then(() => {
         console.log('Succesfully reported review')
         res.status(204).send()

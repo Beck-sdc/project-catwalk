@@ -10,9 +10,9 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      reviewMetadata: { product_id: 1 },
+      reviewMetadata: { product_id: 4 },
       currentStyle: 1,
-      productId: { product_id: 1 },
+      productId: { product_id: 4 },
     };
 
     this.handleChangeProduct = this.handleChangeProduct.bind(this);
@@ -22,12 +22,16 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    this.getReviewMetadata(this.state.reviewMetadata.product_id || 1);
+    this.getReviewMetadata(this.state.reviewMetadata.product_id || 4);
     this.getAllProducts(this.state.productId.product_id || 1);
   }
 
   getReviewMetadata(productId) {
     axios.get(`reviews/meta/${productId}`)
+      .then(results => {
+        console.log('results: ', results)
+        return results
+      })
       .then(results => this.setState({ reviewMetadata: results.data, currentStyle: results.data.defaultStyle.style_id }))
       .catch(err => console.error('failed to retrieve review metadata: ', err))
   }

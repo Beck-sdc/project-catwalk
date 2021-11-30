@@ -5,16 +5,16 @@ import axios from 'axios';
 const Helpful = ({helpfulness, reviewId}) => {
     const [helpful, setHelpful] = useState(helpfulness)
     const [click, setClick] = useState(false)
-    
+
     // TODO: useEffect
     useEffect( () => {
         setHelpful(helpful)
     }, [helpful])
 
-    
+
     const updateHelpful = e => {
         e.preventDefault()
-        
+
         if (!click) {
             return axios.put(`/reviews/${reviewId}/helpful`, { review_id: `${reviewId}`})
                 .then(res => {
@@ -38,13 +38,13 @@ const Helpful = ({helpfulness, reviewId}) => {
                 .catch(err => console.log('Cannot report review.', err))
         }
     }
-    
+
     return (
         <div>
             <div id="review-helpful">Helpful?
                 <a  id="review-answer"
-                    href="#" 
-                    value="yes" 
+                    href="#"
+                    value="yes"
                     onClick={updateHelpful}
                 >Yes
                 </a>({helpful})
@@ -78,10 +78,10 @@ export default Helpful;
 //             })
 //     }
 // }
-{/* <a 
-    href="#" 
-    style={{margin: "2px", padding: "2px"}} 
-    value="no"  
+{/* <a
+    href="#"
+    style={{margin: "2px", padding: "2px"}}
+    value="no"
     onClick={updateHelpful}
 >No
 </a>({notHelpful}) */}
