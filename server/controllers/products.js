@@ -2,7 +2,7 @@ const getAverageRating = require('./helpers/getAverageRating.js');
 const getDefaultStyle = require('./helpers/getDefaultStyle.js');
 const TOKEN = require('../../config.js').TOKEN;
 const axios = require('axios');
-const API_URL = `http://localhost:3001`
+const API_URL = `18.118.187.115`
 
 module.exports = {
   getAll: (req, res) => {
