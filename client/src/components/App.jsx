@@ -23,7 +23,7 @@ class App extends React.Component {
 
   componentDidMount() {
     this.getReviewMetadata(this.state.reviewMetadata.product_id || 4);
-    this.getAllProducts(this.state.productId.product_id || 1);
+    this.getAllProducts(this.state.productId.product_id || 4);
   }
 
   getReviewMetadata(productId) {
