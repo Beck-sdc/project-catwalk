@@ -32,6 +32,5 @@ app.listen(port, (err) => {
     console.error(err);
   } else {
     console.log(`Server running on port ${port}`);
-    console.log(`Here: http://127.0.0.1:${port}`);
   }
 })

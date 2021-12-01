@@ -2,7 +2,7 @@ const getAverageRating = require('./helpers/getAverageRating.js');
 const getDefaultStyle = require('./helpers/getDefaultStyle.js');
 const TOKEN = require('../../config.js').TOKEN;
 const axios = require('axios');
-const API_URL = `18.223.20.178`
+const API_URL = `3.144.143.237`
 
 let config = {
   headers: {

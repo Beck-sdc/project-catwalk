@@ -1,6 +1,6 @@
 const TOKEN = require('../../config.js').TOKEN;
 const axios = require('axios');
-const API_URL = `18.118.187.115`
+const API_URL = `18.191.164.115`
 
 let config = {
   headers: {
